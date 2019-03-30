@@ -16,7 +16,6 @@ class Bubble {
 
     hide() {
         document.getElementById("bubble").hidden = true;
-        console.log("hide");
     }
 
     show(text) {
