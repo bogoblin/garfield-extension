@@ -40,9 +40,9 @@ function drawGarfield(state) {
     if(i >= n) i = -n + i;
 
     if(state['flipped'])
-        garfieldCanvas.style.transform = "scaleX(-1)";
+        garfieldCanvas.style.transform = "scale(-3, 3)";
     else
-        garfieldCanvas.style.transform = "scaleX(+1)";
+        garfieldCanvas.style.transform = "scale( 3, 3)";
 
     var x = state['start'][0] + state['offset'][0] * i;
     var y = state['start'][1] + state['offset'][1] * i; 

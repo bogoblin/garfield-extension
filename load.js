@@ -3,8 +3,10 @@ var context = canvas.getContext('2d');
 
 var garfieldCanvas = document.createElement('canvas');
 var garfieldContext = garfieldCanvas.getContext('2d');
+garfieldContext.imageSmoothingEnabled = false;
+garfieldContext.webkitImageSmoothingEnabled = false;
 garfieldCanvas.style.position = "absolute";
-garfieldCanvas.style.zIndex = +1000;
+garfieldCanvas.style.zIndex = 100000;
 document.body.appendChild(garfieldCanvas);
 
 garf = new Image();
