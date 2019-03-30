@@ -1,6 +1,6 @@
 function garfield() {
-    browser.tabs.create({
-        url: "https://www.garfield.com"
+    browser.tabs.executeScript({
+        file: "yourscript.js"
     });
 }
 
