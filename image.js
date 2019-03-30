@@ -55,5 +55,3 @@ function nextFrame(state) {
         state['currItem'] = 0;
     drawGarfield(state);
 }
-
-window.onload = load;

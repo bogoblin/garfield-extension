@@ -7,6 +7,7 @@ garfieldContext.imageSmoothingEnabled = false;
 garfieldContext.webkitImageSmoothingEnabled = false;
 garfieldCanvas.style.position = "absolute";
 garfieldCanvas.style.zIndex = 100000;
+garfieldCanvas.classList = "garfield";
 document.body.appendChild(garfieldCanvas);
 
 garf = new Image();
@@ -16,3 +17,4 @@ garf.onload = () => {
     canvas.height = garf.height;
     context.drawImage(garf, 0, 0);
 }
+0;
