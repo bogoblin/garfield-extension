@@ -23,8 +23,8 @@
     z-index: 10000000;
 }
 
-.bubble > .inner {
-    margin-left: 170px;
+.inner {
+    margin-left: 80px;
     width: 70%;
 }
 
