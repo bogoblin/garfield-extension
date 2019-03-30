@@ -29,3 +29,11 @@ animJump['size'] = [48, 64];
 animJump['noOfItems'] = 4;
 animJump['currItem'] = 0;
 animJump['flipped'] = false;
+
+var animSleeping = {}; // THIS ONE IS BROKEN RN
+animSleeping['start'] = [170, 260];
+animSleeping['offset'] = [55, 0];
+animSleeping['size'] = [60, 40];
+animSleeping['noOfItems'] = 4;
+animSleeping['currItem'] = 0;
+animSleeping['flipped'] = false;
