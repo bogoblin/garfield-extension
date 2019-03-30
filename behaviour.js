@@ -25,6 +25,9 @@ function update() {
         else y += walkSpeed;
         state = animJump;
         state['flipped'] = x > targetX;
+    } else {
+        targetX = Math.random() * window.innerWidth;
+        targetY = Math.random() * window.innerHeight;
     }
 
     if(frame % 4 == 0)
@@ -34,8 +37,3 @@ function update() {
 }
 
 setInterval(update, 1000 / 30);
-
-document.onmousemove = function (e) {
-    targetX = e.clientX - 20;
-    targetY = e.clientY - 100;
-}
