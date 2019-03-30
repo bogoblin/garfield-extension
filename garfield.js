@@ -1,4 +1,4 @@
-const scripts = ["Bubble.js", "creategarfield.js"];
+const scripts = ["Bubble.js", "creategarfield.js", "image.js", "animations.js", "behaviour.js"];
 
 function garfield() {
     scripts.forEach(script => {
