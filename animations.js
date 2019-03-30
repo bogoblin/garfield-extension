@@ -31,9 +31,9 @@ animJump['currItem'] = 0;
 animJump['flipped'] = false;
 
 var animSleeping = {}; // THIS ONE IS BROKEN RN
-animSleeping['start'] = [170, 260];
+animSleeping['start'] = [185, 260];
 animSleeping['offset'] = [55, 0];
-animSleeping['size'] = [60, 40];
-animSleeping['noOfItems'] = 4;
+animSleeping['size'] = [55, 40];
+animSleeping['noOfItems'] = 1;
 animSleeping['currItem'] = 0;
 animSleeping['flipped'] = false;

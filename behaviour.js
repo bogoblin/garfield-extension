@@ -1,4 +1,4 @@
-var x = 0, y = 0;
+var x = 200, y = 200;
 var targetX = 200, targetY = 200;
 var frame = 0;
 
@@ -20,8 +20,8 @@ function updateIdle() {
     currAnimation = animIdle;
     stateTimeout--;
     if(stateTimeout < 0) {
-        targetX = Math.random() * window.innerWidth;
-        targetY = Math.random() * window.innerHeight;
+        targetX = Math.random() * (window.innerWidth-200) + 100;
+        targetY = Math.random() * (window.innerHeight-200) + 100;
         currState = STATE_WALKING;
     }
 }
@@ -35,7 +35,7 @@ function updateWalking() {
     } else if(Math.abs(y - targetY) > walkSpeed) {
         if(y > targetY) y -= walkSpeed;
         else y += walkSpeed;
-        currAnimation = animJump;
+        currAnimation = animWalk;
         currAnimation['flipped'] = x > targetX;
     } else {
         if(Math.random() > 0.5) {
@@ -60,7 +60,8 @@ function updateSleeping() {
 
 function updateFalling() {
     currAnimation = animJump;
-    y += walkSpeed;
+    y += walkSpeed*5;
+    console.log(stateTimeout);
     stateTimeout--;
     if(stateTimeout < 0) {
         currState = STATE_IDLE;
@@ -79,6 +80,7 @@ function update() {
         updateSleeping();
     } else if(currState == STATE_DRAGGING) {
         currAnimation = animJump;
+        stateTimeout = 5;
     } else if(currState == STATE_DROPPED) {
         updateFalling();
     } else {

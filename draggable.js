@@ -30,7 +30,7 @@ function dragElement(elmnt) {
         document.onmouseup = null;
         document.onmousemove = null;
         currState = STATE_DROPPED;
-        stateTimeout = 30;
+        stateTimeout = 8;
     }
 }
 
