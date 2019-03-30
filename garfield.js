@@ -1,6 +1,6 @@
 function garfield() {
     browser.tabs.executeScript({
-        file: "yourscript.js"
+        file: "creategarfield.js"
     });
 }
 
