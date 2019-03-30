@@ -9,3 +9,7 @@ garf.style = `
     z-index: 10000;
 `;
 document.body.appendChild(garf);
+
+let bubble = new Bubble("sing o godess the anger of achilles son of peleus", 200, 200, 1000);
+
+0;
