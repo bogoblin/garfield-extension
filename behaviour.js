@@ -7,6 +7,7 @@ var walkSpeed = 5;
 var currAnimation = animIdle;
 
 const STATE_IDLE = 0, STATE_WALKING = 1, STATE_SLEEPING = 2;
+const STATE_DRAGGING = 10, STATE_DROPPED = 11; // for drag n drop
 var stateTimeout = 5; // no of frames until change state (only applicable in some states)
 var currState = STATE_IDLE;
 
@@ -40,7 +41,7 @@ function updateWalking() {
         if(Math.random() > 0.5) {
             currState = STATE_IDLE;
             stateTimeout = Math.random() * 100;
-        } else {
+         } else {
             currState = STATE_SLEEPING;
             stateTimeout = Math.random() * 100;
         }
@@ -57,6 +58,16 @@ function updateSleeping() {
     }
 }
 
+function updateFalling() {
+    currAnimation = animJump;
+    y += walkSpeed;
+    stateTimeout--;
+    if(stateTimeout < 0) {
+        currState = STATE_IDLE;
+        stateTimeout = 50;
+    }
+}
+
 function update() {
     setPosition(x, y);
 
@@ -66,6 +77,10 @@ function update() {
         updateWalking();
     } else if(currState == STATE_SLEEPING) {
         updateSleeping();
+    } else if(currState == STATE_DRAGGING) {
+        currAnimation = animJump;
+    } else if(currState == STATE_DROPPED) {
+        updateFalling();
     } else {
         // i am lost in the void.
     }
