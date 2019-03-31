@@ -57,10 +57,18 @@ class Garfield {
                     garfield.resetAnim();
                 }
                 if (garfield.frame % 400 == 0) {
-                    garfield.gotoAndWhack(
-                        Math.random() * (window.innerWidth-200) + 100,
-                        Math.random() * (window.innerHeight-200) + 100
-                    );
+                    let rand = Math.random();
+                    if (rand > 0.5) {
+                        garfield.gotoAndWhack(
+                            Math.random() * (window.innerWidth-200) + 100,
+                            Math.random() * (window.innerHeight-200) + 100
+                        );
+                    } else {
+                        garfield.gotoAndKick(
+                            Math.random() * (window.innerWidth-200) + 100,
+                            Math.random() * (window.innerHeight-200) + 100
+                        );
+                    }
                 }
                 break;
 
@@ -182,7 +190,9 @@ class Garfield {
     gotoAndKick(x, y) {
         garfield.walkTo(x, y, () => {
             let ke = garfield.elementToKick();
+            if (!ke) return;
             garfield.kick(ke);
+            garfield.say("Get outta my way, "+ke.tagName);
         });
     }
     whack(element) {
@@ -195,7 +205,9 @@ class Garfield {
     gotoAndWhack(x, y) {
         garfield.walkTo(x, y, () => {
             let ke = garfield.elementToKick();
+            if (!ke) return;
             garfield.whack(ke);
+            garfield.say("Hasta la vista, "+ke.tagName);
         });
     }
 

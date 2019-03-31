@@ -13,7 +13,14 @@ class Bubble {
     }
 
     update() {
-        document.getElementById("bubble").style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        let element = document.getElementById("bubble");
+        if (garfield.x > window.innerWidth - 500) {
+            element.className = "xreverse";
+            element.style = "left: "+(garfield.x+25-500)+"px; top: "+(garfield.y-290)+"px;";
+        } else {
+            element.className = "";
+            element.style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        }
         if (this.msgdone) bubble.hide();
     }
 
