@@ -22,7 +22,8 @@ function elementToKick(x,y,threshold=4000) {
       break;
     }
   }
-  if (hasChildImg(viable)) return viable;
+  // if (hasChildImg(viable))
+  return viable;
 }
 
 function slideOff(element,orientation=1) {

@@ -56,12 +56,17 @@ class Garfield {
                 if (garfield.currentAnimation != lastAnim) {
                     garfield.resetAnim();
                 }
-                if (garfield.frame % 700 == 0) {
+                if (garfield.frame % 200 == 0) {
                     let rand = Math.random();
-                    if (rand > 0.5) {
+                    if (rand > 0.66) {
                         garfield.gotoAndWhack(
                             Math.random() * (window.innerWidth-200) + 100,
                             Math.random() * (window.innerHeight-200) + 100
+                        );
+                    } else if (rand > 0.33){
+                        garfield.gotoAndScratch(
+                          Math.random() * (window.innerWidth-200) + 100,
+                          Math.random() * (window.innerHeight-200) + 100
                         );
                     } else {
                         garfield.gotoAndKick(
@@ -180,6 +185,9 @@ class Garfield {
     elementToKick() {
         return elementToKick(garfield.x, garfield.y, 400);
     }
+    elementToScratch() {
+        return elementToKick(garfield.x, garfield.y, 20);
+    }
     kick(element) {
         garfield.kickFramesLeft = 16;
         setTimeout(() => {
@@ -202,12 +210,41 @@ class Garfield {
         }, 480);
         this.state = STATE_WHACKING;
     }
+    scratch(element) {
+      // place scratch image over element
+      var rect = element.getBoundingClientRect();
+      var scratchImg = document.createElement("img");
+      scratchImg.setAttribute("src", scratch.src);
+      scratchImg.style.width = element.offsetWidth + "px";
+      scratchImg.style.height = element.offsetHeight + "px";
+      scratchImg.style.position = "absolute";
+      scratchImg.style.top = (rect.top + window.scrollY) + "px";
+      scratchImg.style.left = (rect.left + window.scrollX) + "px";
+      scratchImg.style.opacity = "0.5";
+      console.log("scratched");
+
+      document.body.appendChild(scratchImg);
+        garfield.whackFramesLeft = 32;
+        setTimeout(() => {
+            // fallDown(element);
+        }, 480);
+        this.state = STATE_WHACKING;
+    }
     gotoAndWhack(x, y) {
         garfield.walkTo(x, y, () => {
             let ke = garfield.elementToKick();
             if (!ke) return;
             garfield.whack(ke);
             garfield.say("Hasta la vista, "+ke.tagName);
+        });
+    }
+    gotoAndScratch(x, y) {
+        garfield.walkTo(x, y, () => {
+            let skra = garfield.elementToScratch();
+            console.log("element to kick:" + skra);
+            if (!skra) return;
+            garfield.scratch(skra);
+            garfield.say("Get outta here "+skra.tagName);
         });
     }
 
