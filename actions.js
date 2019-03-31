@@ -9,7 +9,7 @@ function hasChildImg(element) {
   } else return false;
 }
 
-function elementToKick(x,y,threshold=4000) {
+function elementToKick(x,y,threshold=20) {
   let elements = document.elementsFromPoint(x,y);
   let viable = null;
   for (let i=1; i<elements.length; i++) {
@@ -22,7 +22,6 @@ function elementToKick(x,y,threshold=4000) {
       break;
     }
   }
-  // if (hasChildImg(viable))
   return viable;
 }
 
