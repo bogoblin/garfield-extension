@@ -10,9 +10,6 @@ function hasChildImg(element) {
 }
 
 function elementToKick(x,y,threshold=20) {
-  x += 40; // move to roughly centre
-  y += 70;
-
   // account for scroll
   y -= window.scrollY;
 

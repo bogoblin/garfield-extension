@@ -203,10 +203,10 @@ class Garfield {
         console.log(actualX);
     }
     elementToKick() {
-        return elementToKick(garfield.x, garfield.y, 400);
+        return elementToKick(garfield.x + 40, garfield.y + 70, 400);
     }
     elementToScratch() {
-        return elementToKick(garfield.x, garfield.y, 20);
+        return elementToKick(garfield.x + 40, garfield.y + 10, 20);
     }
     kick(element) {
         garfield.kickFramesLeft = 16;
