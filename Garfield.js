@@ -57,7 +57,7 @@ class Garfield {
                 if (garfield.currentAnimation != lastAnim) {
                     garfield.resetAnim();
                 }
-                if (garfield.frame % 200 == 0) {
+                if (garfield.frame % 100 == 0) {
                     let rand = Math.random();
                     if (rand > 0.66) {
                         garfield.gotoAndWhack(
