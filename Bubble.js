@@ -13,7 +13,14 @@ class Bubble {
     }
 
     update() {
-        document.getElementById("bubble").style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        let element = document.getElementById("bubble");
+        if (garfield.x > window.innerWidth - 500) {
+            element.className = "xreverse";
+            element.style = "left: "+(garfield.x+25-500)+"px; top: "+(garfield.y-290)+"px;";
+        } else {
+            element.className = "";
+            element.style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        }
         if (this.msgdone) bubble.hide();
     }
 
@@ -25,7 +32,7 @@ class Bubble {
     show(text) {
         if (!this.msgdone) return;
         this.msgdone = false;
-        let size = 5/(text.length/20 + 1) + "em";
+        let size = 100/(text.length/20 + 1) + "px";
         document.getElementById("bubble").innerHTML = "<span class='inner' style='font-size:"+size+"'>"+text+"</span>";
         document.getElementById("bubble").hidden = false;
         var msg = new SpeechSynthesisUtterance(text);

@@ -1,8 +1,9 @@
 const WALKSPEED = 5;
 const STATE_IDLE = 0,
     STATE_WALKING = 1,
-    STATE_SLEEPING = 2;
-    STATE_KICKING = 3;
+    STATE_SLEEPING = 2,
+    STATE_KICKING = 3,
+    STATE_WHACKING = 4;
 const STATE_DRAGGING = 10,
     STATE_DROPPED = 11; // for drag n drop
 
@@ -40,18 +41,42 @@ class Garfield {
             this.onarrived = onarrived;
         }
     }
+    resetAnim() {
+        garfield.currentAnimation["currItem"] = 0;
+    }
     update() {
         if (garfield.frame % 4 == 0) {
             garfield.nextFrame();
         }
         garfield.frame++;
+        let lastAnim = garfield.currentAnimation;
         switch (garfield.state) {
             case STATE_IDLE:
                 garfield.currentAnimation = animIdle;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
+                if (garfield.frame % 400 == 0) {
+                    let rand = Math.random();
+                    if (rand > 0.5) {
+                        garfield.gotoAndWhack(
+                            Math.random() * (window.innerWidth-200) + 100,
+                            Math.random() * (window.innerHeight-200) + 100
+                        );
+                    } else {
+                        garfield.gotoAndKick(
+                            Math.random() * (window.innerWidth-200) + 100,
+                            Math.random() * (window.innerHeight-200) + 100
+                        );
+                    }
+                }
                 break;
 
             case STATE_WALKING:
                 garfield.currentAnimation = animWalk;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
                 if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
                     if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
                     else garfield.x += WALKSPEED;
@@ -69,15 +94,24 @@ class Garfield {
 
             case STATE_SLEEPING:
                 garfield.currentAnimation = animSleeping;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
                 break;
 
             case STATE_DRAGGING:
                 garfield.currentAnimation = animJump;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
                 bubble.show("Hey, put me down!");
                 break;
 
             case STATE_DROPPED:
                 garfield.currentAnimation = animJump;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
                 garfield.yvel++;
                 garfield.y += garfield.yvel;
                 garfield.x += garfield.xvel;
@@ -96,8 +130,28 @@ class Garfield {
 
             case STATE_KICKING:
                 garfield.currentAnimation = animKick;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
                 garfield.kickFramesLeft--;
+                if (garfield.currentAnimation["currItem"] >= 3) {
+                    garfield.currentAnimation["currItem"] = 3;
+                }
                 if (garfield.kickFramesLeft <= 0) {
+                    garfield.goIdle();
+                }
+                break;
+
+            case STATE_WHACKING:
+                garfield.currentAnimation = animWhack;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
+                garfield.whackFramesLeft--;
+                if (garfield.currentAnimation["currItem"] >= 2) {
+                    garfield.currentAnimation["currItem"] = 2;
+                }
+                if (garfield.whackFramesLeft <= 0) {
                     garfield.goIdle();
                 }
                 break;
@@ -127,25 +181,38 @@ class Garfield {
         return elementToKick(garfield.x, garfield.y, 400);
     }
     kick(element) {
-        garfield.kickFramesLeft = 12;
+        garfield.kickFramesLeft = 16;
         setTimeout(() => {
             slideOff(element, this.currentAnimation["flipped"]?-1:1);
         }, 300);
         this.state = STATE_KICKING;
     }
+    gotoAndKick(x, y) {
+        garfield.walkTo(x, y, () => {
+            let ke = garfield.elementToKick();
+            if (!ke) return;
+            garfield.kick(ke);
+            garfield.say("Get outta my way, "+ke.tagName);
+        });
+    }
+    whack(element) {
+        garfield.whackFramesLeft = 32;
+        setTimeout(() => {
+            fallDown(element);
+        }, 480);
+        this.state = STATE_WHACKING;
+    }
+    gotoAndWhack(x, y) {
+        garfield.walkTo(x, y, () => {
+            let ke = garfield.elementToKick();
+            if (!ke) return;
+            garfield.whack(ke);
+            garfield.say("Hasta la vista, "+ke.tagName);
+        });
+    }
 
 
 }
-
-setTimeout(function() {
-    let element = document.getElementsByTagName("img")[0];
-    garfield.walkToElement(element, () => {
-        console.log("asdfasdfdone");
-        let ke = garfield.elementToKick();
-        console.log(ke);
-        garfield.kick(ke);
-    });
-}, 2000);
 
 garfield = new Garfield();
 
