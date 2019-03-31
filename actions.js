@@ -17,7 +17,7 @@ function elementToKick(x,y,threshold=20) {
     console.log(element);
     let rect = element.getBoundingClientRect()
     let area = rect.width * rect.height;
-    if (area > threshold) {
+    if (area > threshold && area < 200000 && element != document.body) {
       viable = element;
       break;
     }
