@@ -1,4 +1,5 @@
 function hasChildImg(element) {
+  if (!element) return false;
   if (element.tagName == "IMG") return true;
   else if (element.children.length != 0) {
     for (let i = 0; i < element.children.length; i++) {
@@ -10,13 +11,18 @@ function hasChildImg(element) {
 
 function elementToKick(x,y,threshold=4000) {
   let elements = document.elementsFromPoint(x,y);
+  let viable = null;
   for (let i=1; i<elements.length; i++) {
     let element = elements[i];
     console.log(element);
     let rect = element.getBoundingClientRect()
     let area = rect.width * rect.height;
-    if (area > threshold) return element;
+    if (area > threshold) {
+      viable = element;
+      break;
+    }
   }
+  if (hasChildImg(viable)) return viable;
 }
 
 function slideOff(element,orientation=1) {
