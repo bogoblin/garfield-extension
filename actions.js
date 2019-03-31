@@ -63,11 +63,12 @@ function fallDown(element) {
   let done = false;
   let i = 0;
   function fall() {
-    if (rect.bottom + i < innerHeight) {
+    if (rect.top + i < innerHeight) {
       element.style.transform = "translateY("+i+"px)";
       i += 10;
     } else {
       done = true;
+      element.parentNode.removeChild(element);
     }
     if (!done) requestAnimationFrame(fall);
   }
