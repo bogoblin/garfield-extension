@@ -10,17 +10,20 @@ function hasChildImg(element) {
 }
 
 function elementToKick(x,y,threshold=20) {
-  x += 50; // move to roughly centre
-  y += 100;
+  x += 40; // move to roughly centre
+  y += 70;
 
   // account for scroll
   y -= window.scrollY;
 
   let elements = document.elementsFromPoint(x,y);
   let viable = null;
-  for (let i=1; i<elements.length; i++) {
+  for (let i=0; i<elements.length; i++) {
     let element = elements[i];
-    console.log(element);
+
+    if(element.classList.contains('scratch')) continue;
+    if(element.classList.contains('garfield')) continue;
+
     let rect = element.getBoundingClientRect()
     let area = rect.width * rect.height;
     if (area > threshold && area < 200000 && element != document.body) {
