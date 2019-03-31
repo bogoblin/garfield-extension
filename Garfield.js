@@ -83,16 +83,24 @@ class Garfield {
                 if (garfield.currentAnimation != lastAnim) {
                     garfield.resetAnim();
                 }
-                if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
-                    if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
-                    else garfield.x += WALKSPEED;
+                if (Math.pow(garfield.x - garfield.targetX, 2) + 
+                    Math.pow(garfield.y - garfield.targetY, 2) > WALKSPEED*WALKSPEED) { 
+                    let dx = garfield.targetX - garfield.x;
+                    let dy = garfield.targetY - garfield.y;
+
+                    let len = Math.sqrt(dx*dx + dy*dy);
+
+                    dx /= len;
+                    dy /= len;
+
+                    dx *= WALKSPEED;
+                    dy *= WALKSPEED;
+
+                    garfield.x += dx;
+                    garfield.y += dy;
+
                     garfield.currentAnimation = animWalk;
                     garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
-                }
-                else if (Math.abs(garfield.y - garfield.targetY) > WALKSPEED) {
-                    if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
-                    else garfield.y += WALKSPEED;
-                    garfield.currentAnimation = animWalk;
                 } else {
                     garfield.goIdle();
                 }
