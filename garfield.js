@@ -63,6 +63,7 @@ class Garfield {
 
             case STATE_DRAGGING:
                 garfield.currentAnimation = animJump;
+                bubble.show("Hey, put me down!");
                 break;
 
             case STATE_DROPPED:
@@ -83,6 +84,10 @@ class Garfield {
         garfieldCanvas.style.top = garfield.y + "px";
 
         if (bubble) bubble.update(garfield);
+    }
+    say(text) {
+        if (this.state == STATE_DRAGGING) return;
+        bubble.show(text);
     }
 
 
