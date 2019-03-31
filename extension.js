@@ -8,6 +8,7 @@ class Bubble {
         this.element.id = "bubble";
         document.body.appendChild(this.element);
         this.msgdone = true;
+        document.getElementById("bubble").hidden = true;
     }
 
     update() {
@@ -158,29 +159,24 @@ animSleeping['currItem'] = 0;
 animSleeping['flipped'] = false;
 
 function sayNewMessage() {
-    if (garfield && garfield.currentState != STATE_DRAGGING) {
-        let msgtype = Math.floor(Math.random()*13);
-        let websitename = window.location.href.split("/")[2];
-        let date = new Date;
-        switch(msgtype) {
-            case 0: bubble.show("I hate Mondays..."); break;
-            case 1: bubble.show("Now where could my pipe be..."); break;
-            case 2: bubble.show("Lasagna first - then I talk"); break;
-            case 3: bubble.show("Why are you on "+websitename+"?"); break;
-            case 4: bubble.show("I love the world wide web!"); break;
-            case 5: bubble.show("9/11 was an inside job"); break;
-            case 6: bubble.show("Check out this great youtube video: https://www.youtube.com/watch?v=9bZkp7q19f0"); break;
-            case 7: bubble.show("I'm hungry. For Lasaga."); break;
-            case 8: bubble.show("Garfield isn't actually funny, the comic is only popular because of the design of the cat, Garfield."); break;
-            case 9: bubble.show("yum yum yum I love to guzzle cum"); break;
-            case 10:bubble.show("Our Father, Who art in Heaven, hallowed be Thy name; Thy Kingdom come, Thy will be done on earth as it is in Heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen. "); break;
-            case 11:bubble.show("heh what if u had mac and cheese with a side of glaric bed"); break;
-            case 12:bubble.show("It is "+((date.getHours()+1)%12-1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
-        }
-    } else {
-        bubble.show("Hey, put me down!");
+    let msgtype = Math.floor(Math.random()*13);
+    let websitename = window.location.href.split("/")[2];
+    let date = new Date;
+    switch(msgtype) {
+        case 0: garfield.say("I hate Mondays..."); break;
+        case 1: garfield.say("Now where could my pipe be..."); break;
+        case 2: garfield.say("Lasagna first - then I talk"); break;
+        case 3: garfield.say("Why are you on "+websitename+"?"); break;
+        case 4: garfield.say("I love the world wide web!"); break;
+        case 5: garfield.say("9/11 was an inside job"); break;
+        case 6: garfield.say("Check out this great youtube video: https://www.youtube.com/watch?v=9bZkp7q19f0"); break;
+        case 7: garfield.say("I'm hungry. For Lasaga."); break;
+        case 8: garfield.say("Garfield isn't actually funny, the comic is only popular because of the design of the cat, Garfield."); break;
+        case 9: garfield.say("yum yum yum I love to guzzle cum"); break;
+        case 10:garfield.say("Our Father, Who art in Heaven, hallowed be Thy name; Thy Kingdom come, Thy will be done on earth as it is in Heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen. "); break;
+        case 11:garfield.say("heh what if u had mac and cheese with a side of glaric bed"); break;
+        case 12:garfield.say("It is "+((date.getHours()-1)%12+1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
     }
-    console.log("asdfasdfhello");
     setTimeout(sayNewMessage, 5000);
 }
 setTimeout(sayNewMessage, 5000);
@@ -204,73 +200,78 @@ class Garfield {
         this.currentAnimation = animIdle;
         this.state = STATE_IDLE;
         this.yvel = 0;
+    }
 
-        this.nextFrame = function () {
-            nextFrame(this.currentAnimation);
+    nextFrame() {
+        nextFrame(this.currentAnimation);
+    }
+    goIdle() {
+        this.state = STATE_IDLE;
+        this.yvel = 0;
+    }
+    walkTo() {
+        this.targetX = x;
+        this.targetY = y;
+        this.state = STATE_WALKING;
+    }
+    update() {
+        if (garfield.frame % 4 == 0) {
+            garfield.nextFrame();
         }
-        this.goIdle = function () {
-            this.state = STATE_IDLE;
-            this.yvel = 0;
-        }
-        this.walkTo = function () {
-            this.targetX = x;
-            this.targetY = y;
-            this.state = STATE_WALKING;
-        }
-        this.update = function () {
-            if (garfield.frame % 4 == 0) {
-                garfield.nextFrame();
-            }
-            garfield.frame++;
-            switch (garfield.state) {
-                case STATE_IDLE:
-                    garfield.currentAnimation = animIdle;
-                    break;
+        garfield.frame++;
+        switch (garfield.state) {
+            case STATE_IDLE:
+                garfield.currentAnimation = animIdle;
+                break;
 
-                case STATE_WALKING:
+            case STATE_WALKING:
+                garfield.currentAnimation = animWalk;
+                if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
+                    if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
+                    else garfield.x += WALKSPEED;
                     garfield.currentAnimation = animWalk;
-                    if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
-                        if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
-                        else garfield.x += WALKSPEED;
-                        garfield.currentAnimation = animWalk;
-                        garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
-                    }
-                    if (Math.abs(y - targetY) > WALKSPEED) {
-                        if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
-                        else y += WALKSPEED;
-                        garfield.currentAnimation = animWalk;
-                    } else {
-                        garfield.goIdle();
-                    }
-                    break;
-
-                case STATE_SLEEPING:
-                    garfield.currentAnimation = animSleeping;
-                    break;
-
-                case STATE_DRAGGING:
-                    garfield.currentAnimation = animJump;
-                    break;
-
-                case STATE_DROPPED:
-                    garfield.currentAnimation = animJump;
-                    garfield.yvel++;
-                    garfield.y += garfield.yvel;
-                    if (garfield.yvel == 15) {
-                        garfield.goIdle();
-                    }
-                    break;
-
-                default:
+                    garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
+                }
+                if (Math.abs(y - targetY) > WALKSPEED) {
+                    if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
+                    else y += WALKSPEED;
+                    garfield.currentAnimation = animWalk;
+                } else {
                     garfield.goIdle();
-                    break;
-            }
-            
-            garfieldCanvas.style.left = garfield.x + "px";
-            garfieldCanvas.style.top = garfield.y + "px";
+                }
+                break;
 
-            if (bubble) bubble.update(garfield);
+            case STATE_SLEEPING:
+                garfield.currentAnimation = animSleeping;
+                break;
+
+            case STATE_DRAGGING:
+                garfield.currentAnimation = animJump;
+                bubble.show("Hey, put me down!");
+                break;
+
+            case STATE_DROPPED:
+                garfield.currentAnimation = animJump;
+                garfield.yvel++;
+                garfield.y += garfield.yvel;
+                if (garfield.yvel == 15) {
+                    garfield.goIdle();
+                }
+                break;
+
+            default:
+                garfield.goIdle();
+                break;
         }
+
+        garfieldCanvas.style.left = garfield.x + "px";
+        garfieldCanvas.style.top = garfield.y + "px";
+
+        if (bubble) bubble.update(garfield);
+    }
+    say(text) {
+        if (this.state == STATE_DRAGGING) return;
+        bubble.show(text);
     }
 
 
@@ -282,9 +283,12 @@ setInterval(garfield.update, 1000 / 30);
 0;
 
 function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    var pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
     elmnt.onmousedown = dragMouseDown;
-    
+
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
@@ -307,7 +311,7 @@ function dragElement(elmnt) {
         garfield.x = garfield.x - pos1;
 
         garfield.state = STATE_DRAGGING;
-        
+
     }
 
     function closeDragElement() {
