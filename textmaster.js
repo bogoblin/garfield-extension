@@ -1,5 +1,6 @@
+
 function sayNewMessage() {
-    if (currState != STATE_DRAGGING) {
+    if (garfield && garfield.currentState != STATE_DRAGGING) {
         let msgtype = Math.floor(Math.random()*13);
         let websitename = window.location.href.split("/")[2];
         let date = new Date;
@@ -24,5 +25,5 @@ function sayNewMessage() {
     console.log("asdfasdfhello");
     setTimeout(sayNewMessage, 5000);
 }
-sayNewMessage();
+setTimeout(sayNewMessage, 5000);
 

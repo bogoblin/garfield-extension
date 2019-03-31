@@ -11,7 +11,7 @@ class Bubble {
     }
 
     update() {
-        document.getElementById("bubble").style = "left: "+(x+25)+"px; top: "+(y-290)+"px;";
+        document.getElementById("bubble").style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
     }
 
     hide() {
@@ -36,4 +36,4 @@ class Bubble {
 }
 
 let bubble = new Bubble();
-setInterval(bubble.update, 30);
+bubble.hide();

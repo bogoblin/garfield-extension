@@ -20,7 +20,7 @@
   },
 
   "background": {
-    "scripts": ["garfield.js"]
+    "scripts": ["launch.js"]
   }
 
 }
