@@ -17,7 +17,7 @@ function sayNewMessage() {
             case 9: bubble.show("yum yum yum I love to guzzle cum"); break;
             case 10:bubble.show("Our Father, Who art in Heaven, hallowed be Thy name; Thy Kingdom come, Thy will be done on earth as it is in Heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen. "); break;
             case 11:bubble.show("heh what if u had mac and cheese with a side of glaric bed"); break;
-            case 12:bubble.show("It is "+((date.getHours()+1)%12-1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
+            case 12:bubble.show("It is "+((date.getHours()-1)%12+1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
         }
     } else {
         bubble.show("Hey, put me down!");
