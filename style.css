@@ -65,12 +65,12 @@
 }
 
 .inner {
-    font-family: Comic;
+    font-family: Comic, "Comic Sans MS";
     margin-left: 80px;
     width: 70%;
 }
 .xreverse .inner {
-    font-family: Comic;
+    font-family: Comic, "Comic Sans MS";
     margin-left: 80px;
     width: 70%;
 }
