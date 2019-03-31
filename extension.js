@@ -211,6 +211,7 @@ class Garfield {
         this.state = STATE_IDLE;
         this.yvel = 0;
         this.xvel = 0;
+        this.onarrived = () => 0;
     }
 
     nextFrame() {
@@ -220,14 +221,18 @@ class Garfield {
         this.state = STATE_IDLE;
         this.yvel = 0;
         this.xvel = 0;
+        garfield.onarrived();
     }
-    walkTo(x, y) {
+    walkTo(x, y, onarrived) {
+        if (this.state != STATE_IDLE) return;
         this.targetX = x;
         this.targetY = y;
         this.state = STATE_WALKING;
+        if (onarrived) {
+            this.onarrived = onarrived;
+        }
     }
     update() {
-        garfield.currentAnimation = animKick;
         if (garfield.frame % 4 == 0) {
             garfield.nextFrame();
         }
@@ -245,7 +250,7 @@ class Garfield {
                     garfield.currentAnimation = animWalk;
                     garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
                 }
-                if (Math.abs(garfield.y - garfield.targetY) > WALKSPEED) {
+                else if (Math.abs(garfield.y - garfield.targetY) > WALKSPEED) {
                     if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
                     else garfield.y += WALKSPEED;
                     garfield.currentAnimation = animWalk;
@@ -300,16 +305,16 @@ class Garfield {
         let actualX = rect.x + window.scrollX;
         let actualY = rect.y + window.scrollY;
         garfield.walkTo(actualX, actualY);
-        console.log("walking to");
-        console.log(element);
+        console.log(actualX);
     }
 
 
 }
 
-setTimeout(function() {
-    console.log(document.getElementsByTagName("h1"));
-    garfield.walkToElement(document.body.getElementsByTagName("h1")[0]);
+setInterval(function() {
+    let element = document.getElementsByTagName("img")[0];
+    garfield.walkToElement(element);
+    element.parentNode.removeChild(element);
 }, 2000);
 
 garfield = new Garfield();
