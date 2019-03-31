@@ -83,8 +83,8 @@ class Garfield {
                 if (garfield.currentAnimation != lastAnim) {
                     garfield.resetAnim();
                 }
-                if (Math.pow(garfield.x - garfield.targetX, 2) + 
-                    Math.pow(garfield.y - garfield.targetY, 2) > WALKSPEED*WALKSPEED) { 
+                if (Math.pow(garfield.x - garfield.targetX, 2) +
+                    Math.pow(garfield.y - garfield.targetY, 2) > WALKSPEED*WALKSPEED) {
                     let dx = garfield.targetX - garfield.x;
                     let dy = garfield.targetY - garfield.y;
 
@@ -245,6 +245,7 @@ class Garfield {
             scratchImg.style.top = (rect.top + window.scrollY) + "px";
             scratchImg.style.left = (rect.left + window.scrollX) + "px";
             scratchImg.style.opacity = "0.5";
+            scratchImg.style.zIndex = "2000";
             document.body.appendChild(scratchImg);
         }, 16*1000.0/33);
     }
