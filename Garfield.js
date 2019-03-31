@@ -129,7 +129,7 @@ class Garfield {
                 garfield.yvel++;
                 garfield.y += garfield.yvel;
                 garfield.x += garfield.xvel;
-                if (garfield.y >= garfield.floorY) {
+                if (garfield.y >= garfield.floorY + window.scrollY) {
                     garfield.goIdle();
                 }
                 if (garfield.x <= 0) {
