@@ -22,7 +22,6 @@ function sayNewMessage() {
     } else {
         bubble.show("Hey, put me down!");
     }
-    console.log("asdfasdfhello");
     setTimeout(sayNewMessage, 5000);
 }
 setTimeout(sayNewMessage, 5000);

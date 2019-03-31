@@ -8,6 +8,7 @@ class Bubble {
         this.element.id = "bubble";
         document.body.appendChild(this.element);
         this.msgdone = true;
+        document.getElementById("bubble").hidden = true;
     }
 
     update() {
