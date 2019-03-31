@@ -32,7 +32,7 @@ class Bubble {
     show(text) {
         if (!this.msgdone) return;
         this.msgdone = false;
-        let size = 5/(text.length/20 + 1) + "em";
+        let size = 100/(text.length/20 + 1) + "px";
         document.getElementById("bubble").innerHTML = "<span class='inner' style='font-size:"+size+"'>"+text+"</span>";
         document.getElementById("bubble").hidden = false;
         var msg = new SpeechSynthesisUtterance(text);
