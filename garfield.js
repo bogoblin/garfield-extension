@@ -2,6 +2,7 @@ const WALKSPEED = 5;
 const STATE_IDLE = 0,
     STATE_WALKING = 1,
     STATE_SLEEPING = 2;
+    STATE_KICKING = 3;
 const STATE_DRAGGING = 10,
     STATE_DROPPED = 11; // for drag n drop
 
@@ -28,6 +29,7 @@ class Garfield {
         this.yvel = 0;
         this.xvel = 0;
         garfield.onarrived();
+        garfield.onarrived = () => {};
     }
     walkTo(x, y, onarrived) {
         if (this.state != STATE_IDLE) return;
@@ -92,6 +94,14 @@ class Garfield {
                 }
                 break;
 
+            case STATE_KICKING:
+                garfield.currentAnimation = animKick;
+                garfield.kickFramesLeft--;
+                if (garfield.kickFramesLeft <= 0) {
+                    garfield.goIdle();
+                }
+                break;
+
             default:
                 garfield.goIdle();
                 break;
@@ -113,14 +123,28 @@ class Garfield {
         garfield.walkTo(actualX, actualY, onarrived);
         console.log(actualX);
     }
+    elementToKick() {
+        return elementToKick(garfield.x, garfield.y, 400);
+    }
+    kick(element) {
+        garfield.kickFramesLeft = 12;
+        setTimeout(() => {
+            slideOff(element, this.currentAnimation["flipped"]?-1:1);
+        }, 300);
+        this.state = STATE_KICKING;
+    }
 
 
 }
 
 setTimeout(function() {
     let element = document.getElementsByTagName("img")[0];
-    garfield.walkToElement(element);
-    element.parentNode.removeChild(element);
+    garfield.walkToElement(element, () => {
+        console.log("asdfasdfdone");
+        let ke = garfield.elementToKick();
+        console.log(ke);
+        garfield.kick(ke);
+    });
 }, 2000);
 
 garfield = new Garfield();

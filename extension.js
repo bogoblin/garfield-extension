@@ -196,6 +196,7 @@ const WALKSPEED = 5;
 const STATE_IDLE = 0,
     STATE_WALKING = 1,
     STATE_SLEEPING = 2;
+    STATE_KICKING = 3;
 const STATE_DRAGGING = 10,
     STATE_DROPPED = 11; // for drag n drop
 
@@ -222,6 +223,7 @@ class Garfield {
         this.yvel = 0;
         this.xvel = 0;
         garfield.onarrived();
+        garfield.onarrived = () => {};
     }
     walkTo(x, y, onarrived) {
         if (this.state != STATE_IDLE) return;
@@ -286,6 +288,14 @@ class Garfield {
                 }
                 break;
 
+            case STATE_KICKING:
+                garfield.currentAnimation = animKick;
+                garfield.kickFramesLeft--;
+                if (garfield.kickFramesLeft <= 0) {
+                    garfield.goIdle();
+                }
+                break;
+
             default:
                 garfield.goIdle();
                 break;
@@ -300,21 +310,35 @@ class Garfield {
         if (this.state == STATE_DRAGGING) return;
         bubble.show(text);
     }
-    walkToElement(element) {
+    walkToElement(element, onarrived) {
         let rect = element.getBoundingClientRect();
         let actualX = rect.x + window.scrollX;
         let actualY = rect.y + window.scrollY;
-        garfield.walkTo(actualX, actualY);
+        garfield.walkTo(actualX, actualY, onarrived);
         console.log(actualX);
+    }
+    elementToKick() {
+        return elementToKick(garfield.x, garfield.y, 400);
+    }
+    kick(element) {
+        garfield.kickFramesLeft = 12;
+        setTimeout(() => {
+            slideOff(element, this.currentAnimation["flipped"]?-1:1);
+        }, 300);
+        this.state = STATE_KICKING;
     }
 
 
 }
 
-setInterval(function() {
+setTimeout(function() {
     let element = document.getElementsByTagName("img")[0];
-    garfield.walkToElement(element);
-    element.parentNode.removeChild(element);
+    garfield.walkToElement(element, () => {
+        console.log("asdfasdfdone");
+        let ke = garfield.elementToKick();
+        console.log(ke);
+        garfield.kick(ke);
+    });
 }, 2000);
 
 garfield = new Garfield();
@@ -366,3 +390,62 @@ function dragElement(elmnt) {
 }
 
 dragElement(garfieldCanvas);
+function elementToKick(x,y,threshold=4000) {
+  let elements = document.elementsFromPoint(x,y);
+  for (let i=1; i<elements.length; i++) {
+    let element = elements[i];
+    console.log(element);
+    let rect = element.getBoundingClientRect()
+    let area = rect.width * rect.height;
+    if (area > threshold) return element;
+  }
+}
+
+function slideOff(element,orientation=1) {
+  let i = 0;
+  let initial = element.getBoundingClientRect().left;
+  let done = false;
+  if (orientation== 1) {
+    return setInterval(()=>{
+      if (initial + i < window.innerWidth) {
+        element.style.transform = "translateX("+i+"px)";
+        i += 16;
+      } else if (!done) {
+        done = true;
+        element.parentNode.removeChild(element);
+      }
+    }, 2);
+  } else if (orientation == -1) {
+    initial = element.getBoundingClientRect().right;
+    return setInterval(()=>{
+      if (initial - i > 0) {
+        element.style.transform = "translateX(-"+i+"px)";
+        i += 16;
+      } else if (!done) {
+        done = true;
+        element.parentNode.removeChild(element);
+      }
+    }, 2);
+  }
+}
+
+function rotateSmall(element) {
+  element.style.transform = "rotate(10deg)";
+}
+
+function fallDown(element) {
+  element.style.position = "fixed";
+  let rect = element.getBoundingClientRect();
+  let done = false;
+  let i = 0;
+  function fall() {
+    if (rect.bottom + i < innerHeight) {
+      element.style.transform = "translateY("+i+"px)";
+      i += 10;
+    } else {
+      done = true;
+    }
+    if (!done) requestAnimationFrame(fall);
+  }
+  requestAnimationFrame(fall);
+}
