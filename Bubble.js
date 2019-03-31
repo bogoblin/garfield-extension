@@ -6,10 +6,10 @@ class Bubble {
     constructor() {
         let element = document.createElement("div");
         element.id = "bubble";
-        element.hidden = true;
+        element.style.display = "none";
         document.body.appendChild(element);
         this.msgdone = true;
-        document.getElementById("bubble").hidden = true;
+        document.getElementById("bubble").style.display = "none";
     }
 
     update() {
@@ -26,7 +26,7 @@ class Bubble {
 
     hide() {
         this.msgdone = true;
-        document.getElementById("bubble").hidden = true;
+        document.getElementById("bubble").style.display = "none";
     }
 
     show(text) {
