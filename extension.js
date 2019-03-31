@@ -236,9 +236,9 @@ class Garfield {
                     garfield.currentAnimation = animWalk;
                     garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
                 }
-                if (Math.abs(y - targetY) > WALKSPEED) {
+                if (Math.abs(garfield.y - garfield.targetY) > WALKSPEED) {
                     if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
-                    else y += WALKSPEED;
+                    else garfield.y += WALKSPEED;
                     garfield.currentAnimation = animWalk;
                 } else {
                     garfield.goIdle();
@@ -287,14 +287,21 @@ class Garfield {
         bubble.show(text);
     }
     walkToElement(element) {
-        let rect = element.getClientBoundingRect();
+        let rect = element.getBoundingClientRect();
         let actualX = rect.x + window.scrollX;
         let actualY = rect.y + window.scrollY;
         garfield.walkTo(actualX, actualY);
+        console.log("walking to");
+        console.log(element);
     }
 
 
 }
+
+setTimeout(function() {
+    console.log(document.getElementsByTagName("h1"));
+    garfield.walkToElement(document.body.getElementsByTagName("h1")[0]);
+}, 2000);
 
 garfield = new Garfield();
 
