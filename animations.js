@@ -2,7 +2,7 @@ var animIdle = {};
 animIdle['start'] = [1, 90];
 animIdle['offset'] = [42, 0];
 animIdle['size'] = [40, 64];
-animIdle['noOfItems'] = 8;
+animIdle['noOfItems'] = 1;
 animIdle['currItem'] = 0;
 animIdle['flipped'] = false;
 
