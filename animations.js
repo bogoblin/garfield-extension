@@ -45,3 +45,11 @@ animSleeping['size'] = [55, 40];
 animSleeping['noOfItems'] = 1;
 animSleeping['currItem'] = 0;
 animSleeping['flipped'] = false;
+
+var animScratch = {};
+animScratch['start'] = [750, 407];
+animScratch['offset'] = [66, 0];
+animScratch['size'] = [64, 64];
+animScratch['noOfItems'] = 2;
+animScratch['currItem'] = 0;
+animScratch['flipped'] = false;
