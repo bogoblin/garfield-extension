@@ -23,6 +23,7 @@ function elementToKick(x,y,threshold=20) {
 
     if(element.classList.contains('scratch')) continue;
     if(element.classList.contains('garfield')) continue;
+    if(element.id.contains('bubble')) continue;
 
     let rect = element.getBoundingClientRect()
     let area = rect.width * rect.height;
