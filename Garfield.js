@@ -3,7 +3,8 @@ const STATE_IDLE = 0,
     STATE_WALKING = 1,
     STATE_SLEEPING = 2,
     STATE_KICKING = 3,
-    STATE_WHACKING = 4;
+    STATE_WHACKING = 4,
+    STATE_SCRATCHING = 5;
 const STATE_DRAGGING = 10,
     STATE_DROPPED = 11; // for drag n drop
 
@@ -161,6 +162,17 @@ class Garfield {
                 }
                 break;
 
+            case STATE_SCRATCHING:
+                garfield.currentAnimation = animScratch;
+                if (garfield.currentAnimation != lastAnim) {
+                    garfield.resetAnim();
+                }
+                garfield.scratchFramesLeft--;
+                if (garfield.scratchFramesLeft <= 0) {
+                    garfield.goIdle();
+                }
+                break;
+
             default:
                 garfield.goIdle();
                 break;
@@ -211,24 +223,22 @@ class Garfield {
         this.state = STATE_WHACKING;
     }
     scratch(element) {
-      // place scratch image over element
-      var rect = element.getBoundingClientRect();
-      var scratchImg = document.createElement("img");
-      scratchImg.setAttribute("src", scratch.src);
-      scratchImg.style.width = element.offsetWidth + "px";
-      scratchImg.style.height = element.offsetHeight + "px";
-      scratchImg.style.position = "absolute";
-      scratchImg.style.top = (rect.top + window.scrollY) + "px";
-      scratchImg.style.left = (rect.left + window.scrollX) + "px";
-      scratchImg.style.opacity = "0.5";
-      console.log("scratched");
+        this.state = STATE_SCRATCHING;
+        garfield.scratchFramesLeft = 16;
 
-      document.body.appendChild(scratchImg);
-        garfield.whackFramesLeft = 32;
         setTimeout(() => {
-            // fallDown(element);
-        }, 480);
-        this.state = STATE_WHACKING;
+            // place scratch image over element
+            var rect = element.getBoundingClientRect();
+            var scratchImg = document.createElement("img");
+            scratchImg.setAttribute("src", scratch.src);
+            scratchImg.style.width = element.offsetWidth + "px";
+            scratchImg.style.height = element.offsetHeight + "px";
+            scratchImg.style.position = "absolute";
+            scratchImg.style.top = (rect.top + window.scrollY) + "px";
+            scratchImg.style.left = (rect.left + window.scrollX) + "px";
+            scratchImg.style.opacity = "0.5";
+            document.body.appendChild(scratchImg);
+        }, 16*1000.0/33);
     }
     gotoAndWhack(x, y) {
         garfield.walkTo(x, y, () => {
@@ -241,7 +251,6 @@ class Garfield {
     gotoAndScratch(x, y) {
         garfield.walkTo(x, y, () => {
             let skra = garfield.elementToScratch();
-            console.log("element to kick:" + skra);
             if (!skra) return;
             garfield.scratch(skra);
             garfield.say("Get outta here "+skra.tagName);
