@@ -176,7 +176,7 @@ animSleeping['currItem'] = 0;
 animSleeping['flipped'] = false;
 
 function sayNewMessage() {
-    let msgtype = Math.floor(Math.random()*13);
+    let msgtype = Math.floor(Math.random()*15);
     let websitename = window.location.href.split("/")[2];
     let date = new Date;
     switch(msgtype) {
@@ -193,6 +193,15 @@ function sayNewMessage() {
         case 10:garfield.say("Our Father, Who art in Heaven, hallowed be Thy name; Thy Kingdom come, Thy will be done on earth as it is in Heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen. "); break;
         case 11:garfield.say("heh what if u had mac and cheese with a side of glaric bed"); break;
         case 12:garfield.say("It is "+((date.getHours()-1)%12+1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
+        case 13:garfield.say("I love to play ping pong all day long.");
+        case 14:garfield.say(`All this time, I can't believe I couldn't see
+        Kept in the dark, but you were there in front of me
+        I've been sleeping a thousand years, it seems
+        Got to open my eyes to everything!
+        Without a thought, without a voice, without a soul
+        (Don't let me die here...)
+        There must be something more!
+        Bring me to life!"`);
     }
     setTimeout(sayNewMessage, 20000);
 }
@@ -525,6 +534,7 @@ function rotateSmall(element) {
 
 function fallDown(element) {
   element.style.position = "fixed";
+  element.style.zIndex = "2000";
   let rect = element.getBoundingClientRect();
   let done = false;
   let i = 0;
@@ -534,6 +544,7 @@ function fallDown(element) {
       i += 10;
     } else {
       done = true;
+      element.parentNode.removeChild(element);
     }
     if (!done) requestAnimationFrame(fall);
   }
