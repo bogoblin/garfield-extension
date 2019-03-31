@@ -38,9 +38,13 @@ class Bubble {
         var msg = new SpeechSynthesisUtterance(text);
         window.speechSynthesis.speak(msg);
 
-        msg.onend = () => {
-            this.msgdone = true;
-            bubble.hide();
+        if(window.speechSynthesis.getVoices().length > 0) {
+            msg.onend = () => {
+                this.msgdone = true;
+                bubble.hide();
+            }
+        } else {
+            setTimeout(function() { bubble.hide(); }, text.length * 100);
         }
     }
 }
