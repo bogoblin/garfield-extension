@@ -4,15 +4,17 @@ var y = 0;
 class Bubble {
 
     constructor() {
-        this.element = document.createElement("div");
-        this.element.id = "bubble";
-        document.body.appendChild(this.element);
+        let element = document.createElement("div");
+        element.id = "bubble";
+        element.hidden = true;
+        document.body.appendChild(element);
         this.msgdone = true;
         document.getElementById("bubble").hidden = true;
     }
 
     update() {
         document.getElementById("bubble").style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        if (this.msgdone) bubble.hide();
     }
 
     hide() {
@@ -177,7 +179,7 @@ function sayNewMessage() {
         case 11:garfield.say("heh what if u had mac and cheese with a side of glaric bed"); break;
         case 12:garfield.say("It is "+((date.getHours()-1)%12+1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
     }
-    setTimeout(sayNewMessage, 5000);
+    setTimeout(sayNewMessage, 20000);
 }
 setTimeout(sayNewMessage, 5000);
 
@@ -200,6 +202,7 @@ class Garfield {
         this.currentAnimation = animIdle;
         this.state = STATE_IDLE;
         this.yvel = 0;
+        this.xvel = 0;
     }
 
     nextFrame() {
@@ -208,8 +211,9 @@ class Garfield {
     goIdle() {
         this.state = STATE_IDLE;
         this.yvel = 0;
+        this.xvel = 0;
     }
-    walkTo() {
+    walkTo(x, y) {
         this.targetX = x;
         this.targetY = y;
         this.state = STATE_WALKING;
@@ -254,8 +258,17 @@ class Garfield {
                 garfield.currentAnimation = animJump;
                 garfield.yvel++;
                 garfield.y += garfield.yvel;
-                if (garfield.yvel == 15) {
+                garfield.x += garfield.xvel;
+                if (garfield.y >= garfield.floorY) {
                     garfield.goIdle();
+                }
+                if (garfield.x <= 0) {
+                    garfield.x = 0;
+                    garfield.xvel *= -0.5;
+                }
+                if (garfield.x >= window.innerWidth) {
+                    garfield.x = window.innerWidth;
+                    garfield.xvel *= -0.5;
                 }
                 break;
 
@@ -272,6 +285,12 @@ class Garfield {
     say(text) {
         if (this.state == STATE_DRAGGING) return;
         bubble.show(text);
+    }
+    walkToElement(element) {
+        let rect = element.getClientBoundingRect();
+        let actualX = rect.x + window.scrollX;
+        let actualY = rect.y + window.scrollY;
+        garfield.walkTo(actualX, actualY);
     }
 
 
@@ -296,6 +315,8 @@ function dragElement(elmnt) {
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
         document.onmousemove = elementDrag;
+        garfield.floorY = 600;
+        console.log("dragdown");
     }
 
     function elementDrag(e) {
@@ -308,7 +329,9 @@ function dragElement(elmnt) {
         pos4 = e.clientY;
 
         garfield.y = garfield.y - pos2;
+        garfield.yvel = -pos2;
         garfield.x = garfield.x - pos1;
+        garfield.xvel = -pos1;
 
         garfield.state = STATE_DRAGGING;
 

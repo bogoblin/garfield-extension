@@ -18,7 +18,7 @@ function sayNewMessage() {
         case 11:garfield.say("heh what if u had mac and cheese with a side of glaric bed"); break;
         case 12:garfield.say("It is "+((date.getHours()-1)%12+1)+" "+(date.getMinutes()<10?"o ":"")+date.getMinutes()+" "+(date.getHours()>=12?"PM":"AM")); break;
     }
-    setTimeout(sayNewMessage, 5000);
+    setTimeout(sayNewMessage, 20000);
 }
 setTimeout(sayNewMessage, 5000);
 

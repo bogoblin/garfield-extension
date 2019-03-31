@@ -4,15 +4,17 @@ var y = 0;
 class Bubble {
 
     constructor() {
-        this.element = document.createElement("div");
-        this.element.id = "bubble";
-        document.body.appendChild(this.element);
+        let element = document.createElement("div");
+        element.id = "bubble";
+        element.hidden = true;
+        document.body.appendChild(element);
         this.msgdone = true;
         document.getElementById("bubble").hidden = true;
     }
 
     update() {
         document.getElementById("bubble").style = "left: "+(garfield.x+25)+"px; top: "+(garfield.y-290)+"px;";
+        if (this.msgdone) bubble.hide();
     }
 
     hide() {
