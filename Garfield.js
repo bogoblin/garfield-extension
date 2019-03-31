@@ -62,17 +62,17 @@ class Garfield {
                     if (rand > 0.66) {
                         garfield.gotoAndWhack(
                             Math.random() * (window.innerWidth-200) + 100,
-                            Math.random() * (window.innerHeight-200) + 100
+                            Math.random() * (window.innerHeight -200) + 100 +window.scrollY
                         );
                     } else if (rand > 0.33){
                         garfield.gotoAndScratch(
                           Math.random() * (window.innerWidth-200) + 100,
-                          Math.random() * (window.innerHeight-200) + 100
+                          Math.random() * (window.innerHeight-200) + 100+window.scrollY
                         );
                     } else {
                         garfield.gotoAndKick(
                             Math.random() * (window.innerWidth-200) + 100,
-                            Math.random() * (window.innerHeight-200) + 100
+                            Math.random() * (window.innerHeight-200) + 100+window.scrollY
                         );
                     }
                 }
