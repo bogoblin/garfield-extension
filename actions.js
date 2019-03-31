@@ -59,6 +59,7 @@ function rotateSmall(element) {
 
 function fallDown(element) {
   element.style.position = "fixed";
+  element.style.zIndex = "2000";
   let rect = element.getBoundingClientRect();
   let done = false;
   let i = 0;
