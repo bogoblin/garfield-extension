@@ -16,73 +16,73 @@ class Garfield {
         this.currentAnimation = animIdle;
         this.state = STATE_IDLE;
         this.yvel = 0;
+    }
 
-        this.nextFrame = function () {
-            nextFrame(this.currentAnimation);
+    nextFrame() {
+        nextFrame(this.currentAnimation);
+    }
+    goIdle() {
+        this.state = STATE_IDLE;
+        this.yvel = 0;
+    }
+    walkTo() {
+        this.targetX = x;
+        this.targetY = y;
+        this.state = STATE_WALKING;
+    }
+    update() {
+        if (garfield.frame % 4 == 0) {
+            garfield.nextFrame();
         }
-        this.goIdle = function () {
-            this.state = STATE_IDLE;
-            this.yvel = 0;
-        }
-        this.walkTo = function () {
-            this.targetX = x;
-            this.targetY = y;
-            this.state = STATE_WALKING;
-        }
-        this.update = function () {
-            if (garfield.frame % 4 == 0) {
-                garfield.nextFrame();
-            }
-            garfield.frame++;
-            switch (garfield.state) {
-                case STATE_IDLE:
-                    garfield.currentAnimation = animIdle;
-                    break;
+        garfield.frame++;
+        switch (garfield.state) {
+            case STATE_IDLE:
+                garfield.currentAnimation = animIdle;
+                break;
 
-                case STATE_WALKING:
+            case STATE_WALKING:
+                garfield.currentAnimation = animWalk;
+                if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
+                    if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
+                    else garfield.x += WALKSPEED;
                     garfield.currentAnimation = animWalk;
-                    if (Math.abs(garfield.x - garfield.targetX) > WALKSPEED) {
-                        if (garfield.x > garfield.targetX) garfield.x -= WALKSPEED;
-                        else garfield.x += WALKSPEED;
-                        garfield.currentAnimation = animWalk;
-                        garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
-                    }
-                    if (Math.abs(y - targetY) > WALKSPEED) {
-                        if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
-                        else y += WALKSPEED;
-                        garfield.currentAnimation = animWalk;
-                    } else {
-                        garfield.goIdle();
-                    }
-                    break;
-
-                case STATE_SLEEPING:
-                    garfield.currentAnimation = animSleeping;
-                    break;
-
-                case STATE_DRAGGING:
-                    garfield.currentAnimation = animJump;
-                    break;
-
-                case STATE_DROPPED:
-                    garfield.currentAnimation = animJump;
-                    garfield.yvel++;
-                    garfield.y += garfield.yvel;
-                    if (garfield.yvel == 15) {
-                        garfield.goIdle();
-                    }
-                    break;
-
-                default:
+                    garfield.currentAnimation['flipped'] = garfield.x > garfield.targetX;
+                }
+                if (Math.abs(y - targetY) > WALKSPEED) {
+                    if (garfield.y > garfield.targetY) garfield.y -= WALKSPEED;
+                    else y += WALKSPEED;
+                    garfield.currentAnimation = animWalk;
+                } else {
                     garfield.goIdle();
-                    break;
-            }
-            
-            garfieldCanvas.style.left = garfield.x + "px";
-            garfieldCanvas.style.top = garfield.y + "px";
+                }
+                break;
 
-            if (bubble) bubble.update(garfield);
+            case STATE_SLEEPING:
+                garfield.currentAnimation = animSleeping;
+                break;
+
+            case STATE_DRAGGING:
+                garfield.currentAnimation = animJump;
+                break;
+
+            case STATE_DROPPED:
+                garfield.currentAnimation = animJump;
+                garfield.yvel++;
+                garfield.y += garfield.yvel;
+                if (garfield.yvel == 15) {
+                    garfield.goIdle();
+                }
+                break;
+
+            default:
+                garfield.goIdle();
+                break;
         }
+
+        garfieldCanvas.style.left = garfield.x + "px";
+        garfieldCanvas.style.top = garfield.y + "px";
+
+        if (bubble) bubble.update(garfield);
     }
 
 
@@ -94,9 +94,12 @@ setInterval(garfield.update, 1000 / 30);
 0;
 
 function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    var pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
     elmnt.onmousedown = dragMouseDown;
-    
+
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
@@ -119,7 +122,7 @@ function dragElement(elmnt) {
         garfield.x = garfield.x - pos1;
 
         garfield.state = STATE_DRAGGING;
-        
+
     }
 
     function closeDragElement() {
