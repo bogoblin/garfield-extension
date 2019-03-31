@@ -144,6 +144,14 @@ animWhack['noOfItems'] = 4;
 animWhack['currItem'] = 0;
 animWhack['flipped'] = false;
 
+var animKick = {};
+animKick['start'] = [297, 403];
+animKick['offset'] = [50, 0];
+animKick['size'] = [48, 60];
+animKick['noOfItems'] = 4;
+animKick['currItem'] = 0;
+animKick['flipped'] = false;
+
 var animJump = {};
 animJump['start'] = [425, 172];
 animJump['offset'] = [48, 0];
@@ -219,6 +227,7 @@ class Garfield {
         this.state = STATE_WALKING;
     }
     update() {
+        garfield.currentAnimation = animKick;
         if (garfield.frame % 4 == 0) {
             garfield.nextFrame();
         }
