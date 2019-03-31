@@ -246,6 +246,7 @@ class Garfield {
             scratchImg.style.left = (rect.left + window.scrollX) + "px";
             scratchImg.style.opacity = "0.5";
             scratchImg.style.zIndex = "2000";
+            scratchImg.classList.add('scratch');
             document.body.appendChild(scratchImg);
         }, 16*1000.0/33);
     }
